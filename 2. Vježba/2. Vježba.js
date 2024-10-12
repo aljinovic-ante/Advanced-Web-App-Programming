@@ -161,3 +161,249 @@
 // console.log(dealer());
 // console.log(dealer());
 // console.log(dealer());
+
+// 8.Kreirati „iterator funkciju“ koja prima niz i vraća objekt koji sadrži next metodu.
+// Svaki poziv next metode vraća sljedeći element niza i njegov index 
+// u nizu (metoda next vraća niz koji se sastoji oddva člana).
+
+// function iterator(niz){
+//     let i=0;
+//     return {
+//         next: function(){
+//             if(i<niz.length){
+//                 return [niz[i++],i-1];
+//             }
+//             else{
+//                 return undefined;
+//             }
+//         }
+//     }
+// }
+
+// let niz=[1,2,3,4,5,6,7,8];
+// const a=iterator(niz);
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+
+
+// 9.Nadopuniti zadatak 3 na nacin da next() funkcija vraca objekt sa vrijednostima value i done {value: vrijednost, done: false}. 
+// Property value sadrzi vrijednost trenutnog elementa niza, a property done ima vrijednost false sve dok se ne dodje do posljednjeg clana niza
+//  (tada mu se vrijednost mijenja u true). Ukoliko se next() funkcija poziva dalje, treba vratiti objekt koji sadrzi samo property done postavljen na true {done: true}.
+
+// function iterator(niz){
+//     let i=0;
+//     return {
+//         next: function(){
+//             if(i<niz.length){
+//                 return {
+//                     value: niz[i++],
+//                     done: false
+//                 };
+//             }
+//             else{
+//                 return {
+//                     done: true
+//                 };
+//             }
+//         }
+//     }
+// }
+
+// let niz=[1,2,3,4,5,6,7,8];
+// const a=iterator(niz);
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+// console.log(a.next());
+
+
+// 10.Napisati „iterator funkciju“ koja prima string riječi odvojenih razmakom, te vraća objekt koji na sebi ima metodu next. Svakim pozivom metode next, 
+// vraća se jedna po jedna riječ. 
+
+// function iterator(string) {
+//     const rijeci=string.split(' ');
+//     let i=0;
+//     return {
+//         next: function() {
+//             if(i<rijeci.length){
+//                 return{
+//                     value: rijeci[i++],
+//                     done: false
+//                 };
+//             }
+//             else{
+//                 return {
+//                     value: undefined,
+//                     done: true
+//                 };
+//             }
+//         }
+//     };
+// };
+
+// let rijec=iterator("plavo auto vozi gradom");
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+
+
+//11.Riješiti prethodni zadatak koristeći generator funkciju.
+
+// function* iterator(string){
+//     let niz=string.split(' ');
+//     for(const rijec of niz){
+//         yield rijec;
+//     }
+// }
+
+// let rijec=iterator("plavo auto vozi gradom");
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+// console.log(rijec.next());
+
+// 12.Napisati funkciju simulacijaRazgovora koja će vratiti „hej“ ili „besmislica“ svako tri sekunde, u ovisnosti o tome je li riječ koja je prosljeđena u funkciju glasi
+//  „generator“. Nije dozvoljeno koristiti petlje, a funkcija simulacijaRazgovora će se pozvati samo jednom.
+//   (Pojašnjenje. koristiti generator funkciju. U funkciju simulacijaRazgovora se šalje niz stringova. Funkcija simulacijaRazgovora završava 
+//     kada se za svaku riječ iz niza ispiše „besmislica“ ili „hej“. Hint-clearInterval() se poziva kada je povrat iz next-a {value:undefined, done:true} ).
+
+// function* simulacijaRazgovora(rijeci){
+//     for(const rijec of rijeci){
+//         yield rijec==='generator' ? "hej" : "besmislica";
+//     }
+
+// }
+
+// function razgovor(rijeci){
+//     let generator=simulacijaRazgovora(rijeci);
+
+//     let interval=setInterval(() => {
+//         let result=generator.next();
+
+//         if(result.done){
+//             clearInterval(interval);
+//         }
+//         else{
+//             console.log(result.value);
+//         }
+//     }, 3000);
+
+// }
+
+// let niz=["plavo","auto","generator","vozi","generator","sumon"];
+// razgovor(niz);
+
+// 13.Koristeći async await pattern, ispisati rečenicu koja se sastoji od imenice i glagola. Pozvati async funkciju i prosljediti joj imenicu.
+//  Unutar async funkcije koristiti ključnu riječ await kako bi se dobio povrat iz ne-async-funkcije koja prima imenicu i konkatenira hardkodirani 
+//  glagol i to vraća.Povrat ispisati nakon tri sekunde.
+
+// function spoji(imenica){
+//     let glagol=" vozi";
+//     return imenica+glagol;
+// }
+
+// async function stvoriRecenicu(imenica){
+//     const recenica=await spoji(imenica);
+//     setTimeout(()=>{
+//         console.log(recenica)
+//     },3000);
+// }
+
+// stvoriRecenicu("Auto");
+
+// 14. Kreirati promise koji će se nakon 1000 ms resolve-ati u string „Resolved“, koristeći metodu
+// setTimeout(). Funkcija koja je zadužena za printanje resolved promisa, se prosljeđuje u promise
+// preko then() metode.
+// (https://developer.mozilla.org/enUS/docs/Web/JavaScript/Reference/ Global_Objects/Promise )
+
+// let promise=new Promise((resolve,reject)=>{
+//     setTimeout(()=>{resolve("Resolved!")},1000);
+// });
+// promise.then(result=>console.log(result));
+
+
+// 15. Kreirati promise koji će se odmah reject-ati. 
+//Iz funkcije koja se pozvala kada je promise rejectan printati „Error“
+//(hint. nad promise objektom pozvati metodu catch).
+
+// let promise=new Promise((resolve,reject)=>{
+//     reject("Error");
+// });
+
+// promise.catch(error => console.log(error));
+
+
+// 16. Promisi su asinhroni i sada ćemo to i dokazati. Kreirati promise koji će se resolve-ati sa
+// vrijednošću „Promise has been resolved!“. Nakon toga ubaciti sljedeći kod:
+// promise.then(() => console.log('Promise has been resolved!'));
+// console.log("I'm not the promise!");
+// Koji redosljed ispisa očekujete? Zašto?
+
+// let promise=new Promise((resolve,reject)=>{
+//     resolve("Promise has been resolved!");
+// })
+
+// promise.then(() => console.log('Promise has been resolved!'));
+// console.log("Im not the promise!");
+
+
+// 17. Niže je naveden objekt fakePeople koji imitira podatke izvučene iz baze podataka. Napisati
+// funkciju fakeAPICall(i) koja vraća promise koji će se resolve-ati u podatke osobe na i-tom mjestu.
+// Promise resolve-ati nakon random broja milisekundi između 1000 i 3000. Napisati funkciju
+// getAllData, koja koristi Promise.all kako bi se 3 API poziva fakeAPICall(i) izvršila istovremeno.
+// Argument i odabrati proizvoljno. U slučaju da je i veći od 3, reject-ati promise.
+// Promise.all
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+// const fakePeople = [
+// { name: 'Ivo', hasPets: false},
+// { name: 'Eva', hasPets: true},
+// { name: 'Marko', hasPets: true} ]
+// const fakePeople = [
+// { name: 'Ivo', hasPets: false},
+// { name: 'Eva', hasPets: true},
+// { name: 'Marko', hasPets: true} ]
+// function fakeAPICall(i){
+//     return new Promise((resolve,reject)=>{
+//         if(i>=3){
+//             reject("Index out of bounds");
+//             return;
+//         }
+
+//         const delay = Math.floor(Math.random() * 2000) + 1000;
+
+//         setTimeout(()=>{
+//             resolve(fakePeople[i])
+//         },delay);
+//     });
+// }
+
+// function getAllData(calls){
+//     let promises=calls.map(index=>fakeAPICall(index));
+//     Promise.all(promises)
+//         .then(result=>{console.log(result)})
+//         .catch(error=>{console.log(error)});
+// }
+
+// getAllData([0,1,2]);
+// getAllData([0,1,3]);
