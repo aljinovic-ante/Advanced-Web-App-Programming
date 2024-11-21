@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Results({ products }) {
   const navigate = useNavigate();
-
+ 
   const handleDetailsClick = (product) => {
     console.log("product 1: ", product)
     navigate(`/details/${product}`);

@@ -72,29 +72,12 @@ export default function Movies(){
         getTypesByFurniture(furniture);
     }, [furniture]);
 
+
     return <div>
-        {/* <h1>{allFurniture}</h1> */}
-        {/* <h1>{
-        allFurniture.map((item, index)=>(<h1 key={index}>{item}</h1>))
-        }</h1> */}
-        <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture}/> 
-        {/* <select value={furniture} onChange={(e)=>{console.log("odabir namjestaja", e.target.value);setFurniture(e.target.value)}}>
-            {allFurniture.map((item, index)=>(<option value={item} key={index}>{item}</option>))}
-        </select> */}
-        {/* <button
-        onClick={(e) => {
-          e.preventDefault();
-          getTypesByFurniture(furniture);
-        }}
-        >Submit</button> */}
+        <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture} /> 
         {furniture && <h1>{furniture}</h1>}
         {types.length>0 &&
         <DropdownMenu options={types} value={type} onChange={setType}/> 
-        // <select value={type} onChange={(e)=>(setType(e.target.value))}>
-        //     {
-        //     types.map((item,index)=>(<option value={item} key={index}>{item}</option>))
-        //     }
-        // </select>
         }
         {type!="" && <h1>Izabrali ste {furniture}: {type}</h1>}
     </div>
