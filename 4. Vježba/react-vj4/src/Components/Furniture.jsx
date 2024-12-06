@@ -39,7 +39,7 @@ const furnitureData = {
     }
 };
 
-export default function Movies(){
+export default function Furniture(){
     const [allFurniture,setAllFurniture]=useState([]);
     const [furniture,setFurniture]=useState("");
     const [types,setTypes]=useState([]);
