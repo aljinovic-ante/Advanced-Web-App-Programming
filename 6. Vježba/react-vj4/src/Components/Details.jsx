@@ -1,6 +1,7 @@
 import { Component } from "react";
 import productData from "../productData";
 import { useParams } from "react-router-dom";
+import { CartContext } from "./Cart";
 
 function withRouter(Component) { //2  --> saljem Details kao component
     return function WrappedComponent(props) {
@@ -10,6 +11,9 @@ function withRouter(Component) { //2  --> saljem Details kao component
 }
 
 class Details extends Component{
+
+    static contextType=CartContext;
+
     constructor(props){
         super(props);
         this.state={
@@ -21,6 +25,16 @@ class Details extends Component{
         const {product}=this.props.params;
         const productDetails=productData[product];
         this.setState({productDetails});
+    }
+
+    handleAddToCart=()=>{
+        const {productDetails}=this.state;
+        if(productDetails){
+            this.context.addToCart({
+                name: this.props.params.product,
+                ...productDetails
+            });
+        }
     }
 
     render(){
@@ -35,6 +49,7 @@ class Details extends Component{
                 <p><strong>Opis:</strong> {productDetails.description}</p>
                 <p><strong>Cijena:</strong> {productDetails.price}</p>
                 <p><strong>Materijal:</strong> {productDetails.material}</p>
+                <button onClick={this.handleAddToCart}>Dodaj u košaricu</button>
             </div>
         )
     }

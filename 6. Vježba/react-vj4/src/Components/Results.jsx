@@ -7,7 +7,7 @@ export default function Results({products}){
                 <li key={index}>
                     {product}
                     <Link to={`/details/${product}`}>
-                        <button>Detalji</button>
+                    <>    </><button>Detalji</button>
                     </Link>
                 </li>
             ))}
