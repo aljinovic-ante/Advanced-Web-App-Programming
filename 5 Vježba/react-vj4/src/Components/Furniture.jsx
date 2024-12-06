@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react";
 import DropdownMenu from "./DropdownMenu";
-import Results from "./Results";
+import Results from "./Results"
 
 const furnitureData = {
   "kauc": {
@@ -39,13 +39,12 @@ const furnitureData = {
       ]
   }
 };
-
 export default function Furniture(){
     const [allFurniture,setAllFurniture]=useState([]);
     const [furniture,setFurniture]=useState("");
     const [types,setTypes]=useState([]);
     const [type,setType]=useState("");
-    const [filteredResults, setFilteredResults] = useState([]);
+    const [filteredResults,setFilteredResults]=useState([]);
 
     async function getFurnitureTypes() {
         const furniture = await fetch("http://demo9984311.mockable.io/namjestaj");
@@ -55,32 +54,32 @@ export default function Furniture(){
         return json;
     }
 
-    function getTypesByFurniture(furniture) {
-      console.log("getTypesByFurniture: ", furniture);
-      if (furnitureData[furniture]) {
-          console.log("if uvjet", furnitureData[furniture]);
-          setTypes(furnitureData[furniture].podvrste.map((podvrsta) => podvrsta.type));
-      } else {
-          setTypes([]);
-      }
+    function getTypesByFurniture(furniture){
+        console.log("getTypesByFurniture: ",furniture);
+        if(furnitureData[furniture]){
+            console.log("if uvjet", furnitureData[furniture]);
+            setTypes(furnitureData[furniture].podvrste.map((podvrsta) => podvrsta.type));
+        }else{
+            setTypes([])
+        }
     }
 
-    
-    function filterProducts() {
-      if (furniture && type) {
-          const filtered = [];
-          if (furniture && type && furnitureData[furniture]) {
-            const podvrsta = furnitureData[furniture].podvrste.find(p => p.type === type);
-            if (podvrsta) {
-              filtered.push(...podvrsta.products);
-            }
+    function filterProducts(){
+      if(furniture && type){
+        let filtered=[]
+        if(furnitureData[furniture]){
+          let podvrsta=furnitureData[furniture].podvrste.find(p=>p.type===type);
+          if(podvrsta){
+            filtered.push(...podvrsta.products)
           }
-          setFilteredResults(filtered);
-      } else {
-          setFilteredResults([]);
+        }
+        setFilteredResults(filtered);
       }
-    }  
-
+      else{
+        setFilteredResults([]);
+      }
+    }
+   
     useEffect(()=>{
         getFurnitureTypes().then((data)=>{setAllFurniture(data.vrsteNamjestaja)});
     },[])
@@ -90,28 +89,24 @@ export default function Furniture(){
         getTypesByFurniture(furniture);
     }, [furniture]);
 
-    useEffect(() => {
+    useEffect(()=>{
       filterProducts();
-    }, [furniture, type]);
+    },[furniture,type]);
+
 
     return <div>
-        {/* <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture}/> 
+        {/* <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture} /> 
         {furniture && <h1>{furniture}</h1>}
-        {types.length>0 && <DropdownMenu options={types} value={type} onChange={setType}/>}
+        {types.length>0 &&
+        <DropdownMenu options={types} value={type} onChange={setType}/> 
+        }
         {type!="" && <h1>Izabrali ste {furniture}: {type}</h1>} */}
-
-        <h1>Filter Products</h1>
+        <h1>Filter products</h1>
         <form>
-            <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture} />
-
-            {furniture && (
-                <DropdownMenu options={types} value={type} onChange={setType} />
-            )}
+          <DropdownMenu options={allFurniture} value={furniture} onChange={setFurniture} /> 
+          {furniture && (<DropdownMenu options={types} value={type} onChange={setType}/>)}
         </form>
-
-        {filteredResults.length > 0 && <Results products={filteredResults} />}
-        {filteredResults.length === 0 && furniture && type && (
-            <p>Nema pronadednog namjestaja</p>
-        )}
+        {filteredResults.length>0 && <Results products={filteredResults}/>}
+        {filteredResults.length===0 && furniture && type && (<p>Nema pronadenog namjestaja</p>)}
     </div>
 }
