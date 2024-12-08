@@ -1,7 +1,8 @@
 import { Component } from "react";
 import productData from "../productData";
 import { useParams } from "react-router-dom";
-import { CartContext } from "./Cart";
+import { CartContext } from "./CartProvider";
+import Modal from "./Modal";
 
 function withRouter(Component) { //2  --> saljem Details kao component
     return function WrappedComponent(props) {
@@ -17,7 +18,9 @@ class Details extends Component{
     constructor(props){
         super(props);
         this.state={
-            productDetails:null
+            productDetails:null,
+            showModal:false,
+            modalMessage:``,
         };
     }
 
@@ -25,7 +28,7 @@ class Details extends Component{
         const {product}=this.props.params;
         const productDetails=productData[product];
         this.setState({productDetails});
-    }
+    };
 
     handleAddToCart=()=>{
         const {productDetails}=this.state;
@@ -34,11 +37,23 @@ class Details extends Component{
                 name: this.props.params.product,
                 ...productDetails
             });
+            console.log("PROZIVOD U KOSARICU: ",this.props.params.product)
+            this.setState({
+                showModal:true,
+                modalMessage:`Proizvod ${this.props.params.product} je dodan u košaricu!`
+            });
         }
-    }
+    };
+
+    handleCloseModal=()=>{
+        console.log("CLOSE MODAL")
+        this.setState({
+            showModal:false
+        })
+    };
 
     render(){
-        const {productDetails}=this.state;
+        const {productDetails,showModal,modalMessage}=this.state;
         if(!productDetails){
             return <p>Nema podataka o proizvodu</p>
         }
@@ -50,6 +65,10 @@ class Details extends Component{
                 <p><strong>Cijena:</strong> {productDetails.price}</p>
                 <p><strong>Materijal:</strong> {productDetails.material}</p>
                 <button onClick={this.handleAddToCart}>Dodaj u košaricu</button>
+
+                {showModal && (
+                    <Modal message={modalMessage} onClose={this.handleCloseModal} />
+                )}
             </div>
         )
     }
