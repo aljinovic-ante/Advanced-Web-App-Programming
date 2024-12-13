@@ -22,7 +22,7 @@ export default function CartProvider({ children }) {
     });
   }
 
-  function removeFromCart(productName) {
+  function removeOneFromCart(productName) {
     setCart((prevCart) =>
       prevCart
         .map((item) =>
@@ -34,15 +34,33 @@ export default function CartProvider({ children }) {
     );
   }
 
+  function addOneToCart(productName) {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.name === productName
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  }
+
+  function removeAllFromCart(productName) {
+    setCart((prevCart) =>
+      prevCart.filter((item) => item.name !== productName)
+    );
+  }  
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeOneFromCart, removeAllFromCart, addOneToCart }}>
       {children}
     </CartContext.Provider>
   );
 }
 
 export function CartItems() {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeOneFromCart, removeAllFromCart, addOneToCart } = useContext(CartContext);
 
   return (
     <div>
@@ -55,7 +73,11 @@ export function CartItems() {
             <li key={index}>
               <strong>{item.name}</strong> - Količina: {item.quantity}, Cijena:{" "}
               {item.price}{" "}
-              <button onClick={() => removeFromCart(item.name)}>-1</button>
+              <button onClick={() => removeOneFromCart(item.name)}>-1</button>
+              <> </>
+              <button onClick={() => addOneToCart(item.name)}>+1</button>
+              <> </>
+              <button onClick={() => removeAllFromCart(item.name)}>Remove from cart</button>
             </li>
           ))}
         </ul>
