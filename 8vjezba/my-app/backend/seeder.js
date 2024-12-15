@@ -11,14 +11,12 @@ dotenv.config();
 const seedDatabase = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
-        console.log("MongoDB connected");
+        console.log("Spojeno");
 
-        // Clear existing data
         await Category.deleteMany();
         await Subcategory.deleteMany();
         await Product.deleteMany();
 
-        // Sample data
         const furnitureData = {
             kauc: {
                 podvrste: [
