@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { CartContext } from "./CartProvider";
 import Modal from "./Modal";
 
-function withRouter(Component) {
+function withRouter(Component) { //2 Component je zapravo Details
     return function WrappedComponent(props) {
         const params = useParams();
-        return <Component {...props} params={params} />;
+        return <Component {...props} params={params} />;  //3 Ovde ga pozivam
     };
 }
 
@@ -82,4 +82,4 @@ class Details extends Component {
     }
 }
 
-export default withRouter(Details);
+export default withRouter(Details); //1
